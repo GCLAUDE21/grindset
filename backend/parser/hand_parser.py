@@ -32,6 +32,10 @@ def parse_hand(hand_text):
     if stack_match:
         hand["hero_stack"] = int(stack_match.group(1))
 
+        # 5b. Stack en big blinds
+    if "hero_stack" in hand and "big_blind" in hand:
+        hand["hero_stack_bb"] = round(hand["hero_stack"] / hand["big_blind"], 1)
+
     # 6. Position du hero
     button_match = re.search(r'Seat #(\d+) is the button', hand_text)
     seat_match = re.search(r'Seat (\d+): ' + HERO, hand_text, re.IGNORECASE)
