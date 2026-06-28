@@ -1,10 +1,23 @@
 from fastapi import FastAPI
-from backend.database.database import init_db, save_hands, get_all_hands
-from backend.parser.hand_parser import parse_file
+from fastapi.middleware.cors import CORSMiddleware
+from backend.database.database import init_db
+from backend.routers import hands, imports
+from backend.routers import hands, imports, stats
 
-app = FastAPI()
+app = FastAPI(title="Grindset API", version="1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 init_db()
+
+app.include_router(hands.router)
+app.include_router(imports.router)
+app.include_router(stats.router)
 
 @app.get("/")
 def home():
@@ -13,20 +26,3 @@ def home():
 @app.get("/status")
 def status():
     return {"status": "ok", "version": "1.0"}
-
-@app.post("/import")
-def import_hands(filepath: str):
-    hands = parse_file(filepath)
-    save_hands(hands)
-    return {
-        "message": f"{len(hands)} mains importées",
-        "hands": hands
-    }
-
-@app.get("/hands")
-def get_hands():
-    hands = get_all_hands()
-    return {
-        "total": len(hands),
-        "hands": hands
-    }

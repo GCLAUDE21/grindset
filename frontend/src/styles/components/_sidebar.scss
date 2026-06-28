@@ -1,0 +1,87 @@
+@use '../variables' as *;
+
+.sidebar {
+  width: 210px;
+  min-height: 100vh;
+  background: $bg-secondary;
+  border-right: 1px solid $border-color;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: $pad-md;
+    border-bottom: 1px solid $border-color;
+  }
+
+  &__logo-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, $accent-purple, $accent-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  &__logo-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__logo-sub {
+    font-size: 9px;
+    color: $text-muted;
+    letter-spacing: 0.06em;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    padding: $pad-sm 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px $pad-md;
+    color: $text-muted;
+    font-size: 12px;
+    transition: all 0.15s;
+    position: relative;
+    text-decoration: none;
+
+    i {
+      font-size: 15px;
+    }
+
+    &:hover {
+      color: $text-secondary;
+      background: rgba($accent-purple, 0.05);
+    }
+
+    &.active {
+      color: $accent-purple;
+      background: rgba($accent-purple, 0.08);
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: $accent-purple;
+        border-radius: 0 2px 2px 0;
+      }
+    }
+  }
+}

@@ -1,0 +1,327 @@
+@use '../variables' as *;
+
+.dashboard {
+  padding: $pad-xl;
+}
+
+.dashboard__header {
+  margin-bottom: $pad-xl;
+}
+
+.status-card {
+  background: $bg-secondary;
+  border: 1px solid $border-color;
+  border-radius: 12px;
+  padding: $pad-lg;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba($accent-purple, 0.5), transparent);
+  }
+
+  &__label {
+    font-size: 10px;
+    color: $text-muted;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  &__value {
+    font-size: 48px;
+    font-weight: 700;
+    color: $accent-purple;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  &__delta {
+    font-size: 12px;
+    color: $accent-teal;
+  }
+
+  &__light {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+
+    &::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    &--green {
+      background: rgba(#3ecfcf, 0.1);
+      color: $accent-teal;
+      border: 1px solid rgba(#3ecfcf, 0.2);
+      &::before { background: $accent-teal; box-shadow: 0 0 6px $accent-teal; }
+    }
+
+    &--orange {
+      background: rgba($accent-gold, 0.1);
+      color: $accent-gold;
+      border: 1px solid rgba($accent-gold, 0.2);
+      &::before { background: $accent-gold; box-shadow: 0 0 6px $accent-gold; }
+    }
+
+    &--red {
+      background: rgba($accent-red, 0.1);
+      color: $accent-red;
+      border: 1px solid rgba($accent-red, 0.2);
+      &::before { background: $accent-red; box-shadow: 0 0 6px $accent-red; }
+    }
+  }
+}
+
+.objectives {
+  margin-bottom: $pad-xl;
+
+  &__title {
+    font-size: 10px;
+    color: $text-muted;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: $pad-md;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.objective {
+  background: $bg-secondary;
+  border: 1px solid $border-color;
+  border-radius: 10px;
+  padding: $pad-md;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  &__label {
+    font-size: 12px;
+    color: $text-secondary;
+  }
+
+  &__nums {
+    font-size: 12px;
+    color: $text-muted;
+    strong { color: $text-primary; font-weight: 500; }
+  }
+
+  &__bar {
+    height: 4px;
+    background: $border-color;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, $accent-teal, lighten($accent-teal, 10%));
+
+    &--purple {
+      background: linear-gradient(90deg, $accent-purple, lighten($accent-purple, 10%));
+    }
+
+    &--gold {
+      background: linear-gradient(90deg, $accent-gold, lighten($accent-gold, 10%));
+    }
+  }
+}
+
+.pre-session {
+  margin-bottom: $pad-xl;
+
+  &__title {
+    font-size: 10px;
+    color: $text-muted;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: $pad-md;
+  }
+}
+
+.warmup-banner {
+  background: linear-gradient(135deg, #0d0d20, #0a1020);
+  border: 1px solid rgba($accent-teal, 0.2);
+  border-radius: 10px;
+  padding: $pad-md;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    i {
+      font-size: 22px;
+      color: $accent-teal;
+    }
+  }
+
+  &__title {
+    font-size: 13px;
+    font-weight: 500;
+    color: $accent-teal;
+    margin-bottom: 3px;
+  }
+
+  &__sub {
+    font-size: 11px;
+    color: rgba($accent-teal, 0.6);
+  }
+
+  &__btn {
+    background: rgba($accent-teal, 0.1);
+    border: 1px solid rgba($accent-teal, 0.25);
+    border-radius: 6px;
+    padding: 6px 14px;
+    color: $accent-teal;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.15s;
+
+    &:hover { background: rgba($accent-teal, 0.2); }
+  }
+}
+
+.leaks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.leak {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: $bg-secondary;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 10px $pad-md;
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    &--red { background: $accent-red; }
+    &--orange { background: $accent-gold; }
+  }
+
+  &__text {
+    flex: 1;
+    font-size: 12px;
+    color: $text-secondary;
+  }
+
+  &__ev {
+    font-size: 11px;
+    color: $accent-red;
+    font-weight: 500;
+  }
+}
+
+.last-session {
+  margin-bottom: $pad-xl;
+
+  &__title {
+    font-size: 10px;
+    color: $text-muted;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: $pad-md;
+  }
+
+  &__card {
+    background: $bg-secondary;
+    border: 1px solid $border-color;
+    border-radius: 10px;
+    padding: $pad-md;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: $pad-md;
+    margin-bottom: $pad-md;
+    padding-bottom: $pad-md;
+    border-bottom: 1px solid $border-color;
+  }
+
+  &__date {
+    font-size: 13px;
+    color: $text-primary;
+    font-weight: 500;
+  }
+
+  &__hands {
+    font-size: 12px;
+    color: $text-muted;
+  }
+
+  &__result {
+    font-size: 13px;
+    font-weight: 500;
+    margin-left: auto;
+
+    &--pos { color: $accent-teal; }
+    &--neg { color: $accent-red; }
+  }
+
+  &__errors {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: $text-secondary;
+
+    i {
+      font-size: 14px;
+      color: $accent-gold;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.loading {
+  padding: $pad-xl;
+  color: $text-muted;
+  font-size: 13px;
+}

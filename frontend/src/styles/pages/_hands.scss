@@ -1,0 +1,140 @@
+@use '../variables' as *;
+
+.hands-page {
+  padding: $pad-xl;
+
+  &__header {
+    margin-bottom: $pad-xl;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 4px;
+  }
+
+  &__sub {
+    font-size: 12px;
+    color: $text-muted;
+  }
+}
+
+.hands-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: $pad-lg;
+}
+
+.hands-filter {
+  background: $bg-secondary;
+  border: 1px solid $border-color;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: $text-secondary;
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    border-color: $border-strong;
+  }
+
+  &:focus {
+    border-color: $accent-purple;
+  }
+
+  option {
+    background: $bg-secondary;
+  }
+}
+
+.hands-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead tr {
+    border-bottom: 1px solid $border-color;
+  }
+
+  th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 10px;
+    color: $text-muted;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $border-color;
+    transition: background 0.15s;
+
+    &:hover {
+      background: rgba($accent-purple, 0.04);
+      cursor: pointer;
+    }
+  }
+
+  td {
+    padding: 10px 12px;
+    font-size: 13px;
+    color: $text-secondary;
+  }
+
+  .won { color: $accent-teal; font-weight: 500; }
+  .lost { color: $accent-red; }
+}
+
+.score-pending {
+  font-size: 12px;
+  color: $text-muted;
+}
+
+.action-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+
+  &--fold  { background: rgba(#4a4a7a, 0.2); color: #8080c0; }
+  &--check { background: rgba($accent-purple, 0.15); color: $accent-purple; }
+  &--raise { background: rgba($accent-teal, 0.15); color: $accent-teal; }
+  &--call  { background: rgba($accent-gold, 0.15); color: $accent-gold; }
+  &--allin { background: rgba($accent-red, 0.15); color: $accent-red; }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $pad-md;
+  margin-top: $pad-lg;
+
+  &__btn {
+    background: $bg-secondary;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    padding: 6px 14px;
+    color: $text-secondary;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover:not(:disabled) {
+      border-color: $accent-purple;
+      color: $accent-purple;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+  }
+
+  &__info {
+    font-size: 12px;
+    color: $text-muted;
+  }
+}
