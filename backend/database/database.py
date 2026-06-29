@@ -35,6 +35,19 @@ def init_db():
         )
     ''')
 
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS hand_actions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            hand_id TEXT,
+            street TEXT,
+            player TEXT,
+            is_hero INTEGER,
+            action TEXT,
+            amount INTEGER,
+            FOREIGN KEY (hand_id) REFERENCES hands(hand_id)
+        )
+    ''')
+
     conn.commit()
     conn.close()
     print("Base de données initialisée")
@@ -86,3 +99,25 @@ def get_all_hands():
     hands = [dict(row) for row in cursor.fetchall()]
     conn.close()
     return hands
+
+def save_hand_actions(hand_id: str, streets: dict):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    for street, actions in streets.items():
+        for action in actions:
+            cursor.execute('''
+                INSERT INTO hand_actions 
+                (hand_id, street, player, is_hero, action, amount)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (
+                hand_id,
+                street,
+                action.get("player", ""),
+                1 if action.get("is_hero") else 0,
+                action.get("action", ""),
+                action.get("amount", 0)
+            ))
+
+    conn.commit()
+    conn.close()

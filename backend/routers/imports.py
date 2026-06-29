@@ -1,7 +1,8 @@
 from fastapi import APIRouter
-from backend.database.database import save_hands
+from backend.database.database import save_hands, save_hand_actions
 from backend.parser.hand_parser import parse_file
 import os
+import json
 
 router = APIRouter(prefix="/import", tags=["import"])
 
@@ -11,6 +12,9 @@ WINAMAX_HISTORY_PATH = "/Users/guillaumeclaude/Library/Application Support/winam
 def import_hands(filepath: str):
     hands = parse_file(filepath)
     save_hands(hands)
+    for hand in hands:
+        if hand.get("streets"):
+            save_hand_actions(hand["hand_id"], hand["streets"])
     return {
         "message": f"{len(hands)} mains importées",
         "hands": hands
@@ -28,6 +32,9 @@ def import_all_hands():
             try:
                 hands = parse_file(filepath)
                 save_hands(hands)
+                for hand in hands:
+                    if hand.get("streets"):
+                        save_hand_actions(hand["hand_id"], hand["streets"])
                 total += len(hands)
                 files_processed += 1
             except Exception as e:
