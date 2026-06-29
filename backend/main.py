@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.database.database import init_db
-from backend.routers import hands, imports
-from backend.routers import hands, imports, stats
+from backend.routers import hands, imports, stats, analysis
 
 app = FastAPI(title="Grindset API", version="1.0")
 
@@ -18,6 +17,7 @@ init_db()
 app.include_router(hands.router)
 app.include_router(imports.router)
 app.include_router(stats.router)
+app.include_router(analysis.router)
 
 @app.get("/")
 def home():

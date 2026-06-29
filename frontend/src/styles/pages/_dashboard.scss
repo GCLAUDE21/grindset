@@ -1,21 +1,10 @@
 @use '../variables' as *;
 
-.dashboard {
-  padding: $pad-xl;
-}
-
-.dashboard__header {
-  margin-bottom: $pad-xl;
-}
-
-.status-card {
+// Mixin card premium
+@mixin card-premium($glow-color: $accent-gold) {
   background: $bg-secondary;
   border: 1px solid $border-color;
-  border-radius: 12px;
-  padding: $pad-lg;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  border-radius: 10px;
   position: relative;
   overflow: hidden;
 
@@ -26,23 +15,75 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba($accent-purple, 0.5), transparent);
+    background: linear-gradient(90deg, transparent, rgba($glow-color, 0.3), transparent);
+  }
+}
+
+.dashboard {
+  padding: $pad-xl;
+}
+
+.dashboard__header {
+  margin-bottom: $pad-xl;
+}
+
+.status-card {
+  @include card-premium($accent-gold);
+  padding: $pad-lg $pad-xl;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: -40px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba($accent-gold, 0.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
   }
 
   &__label {
     font-size: 10px;
     color: $text-muted;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+
+  &__score-row {
+    display: flex;
+    align-items: center;
+    gap: $pad-md;
   }
 
   &__value {
-    font-size: 48px;
+    font-size: 56px;
     font-weight: 700;
-    color: $accent-purple;
+    color: $accent-gold;
     line-height: 1;
-    margin-bottom: 6px;
+    letter-spacing: -2px;
+    text-shadow: 0 0 40px rgba($accent-gold, 0.3);
+  }
+
+  &__sparkline {
+    width: 80px;
+    height: 30px;
+    opacity: 0.8;
   }
 
   &__delta {
@@ -50,41 +91,46 @@
     color: $accent-teal;
   }
 
+  &__sessions {
+    font-size: 11px;
+    color: $text-muted;
+  }
+
   &__light {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 20px;
+    padding: 8px 16px;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
 
     &::before {
       content: '';
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       flex-shrink: 0;
     }
 
     &--green {
-      background: rgba(#3ecfcf, 0.1);
+      background: rgba($accent-teal, 0.08);
       color: $accent-teal;
-      border: 1px solid rgba(#3ecfcf, 0.2);
+      border: 1px solid rgba($accent-teal, 0.15);
       &::before { background: $accent-teal; box-shadow: 0 0 6px $accent-teal; }
     }
 
     &--orange {
-      background: rgba($accent-gold, 0.1);
+      background: rgba($accent-gold, 0.08);
       color: $accent-gold;
-      border: 1px solid rgba($accent-gold, 0.2);
+      border: 1px solid rgba($accent-gold, 0.15);
       &::before { background: $accent-gold; box-shadow: 0 0 6px $accent-gold; }
     }
 
     &--red {
-      background: rgba($accent-red, 0.1);
+      background: rgba($accent-red, 0.08);
       color: $accent-red;
-      border: 1px solid rgba($accent-red, 0.2);
+      border: 1px solid rgba($accent-red, 0.15);
       &::before { background: $accent-red; box-shadow: 0 0 6px $accent-red; }
     }
   }
@@ -104,21 +150,19 @@
   &__list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 }
 
 .objective {
-  background: $bg-secondary;
-  border: 1px solid $border-color;
-  border-radius: 10px;
+  @include card-premium($accent-gold);
   padding: $pad-md;
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   &__label {
@@ -133,8 +177,8 @@
   }
 
   &__bar {
-    height: 4px;
-    background: $border-color;
+    height: 3px;
+    background: rgba($border-color, 0.8);
     border-radius: 2px;
     overflow: hidden;
   }
@@ -142,14 +186,17 @@
   &__fill {
     height: 100%;
     border-radius: 2px;
-    background: linear-gradient(90deg, $accent-teal, lighten($accent-teal, 10%));
+    background: linear-gradient(90deg, $accent-teal, rgba($accent-teal, 0.6));
+    box-shadow: 0 0 8px rgba($accent-teal, 0.4);
 
     &--purple {
-      background: linear-gradient(90deg, $accent-purple, lighten($accent-purple, 10%));
+      background: linear-gradient(90deg, $accent-purple, rgba($accent-purple, 0.6));
+      box-shadow: 0 0 8px rgba($accent-purple, 0.4);
     }
 
     &--gold {
-      background: linear-gradient(90deg, $accent-gold, lighten($accent-gold, 10%));
+      background: linear-gradient(90deg, $accent-gold, rgba($accent-gold, 0.6));
+      box-shadow: 0 0 8px rgba($accent-gold, 0.4);
     }
   }
 }
@@ -167,14 +214,13 @@
 }
 
 .warmup-banner {
-  background: linear-gradient(135deg, #0d0d20, #0a1020);
-  border: 1px solid rgba($accent-teal, 0.2);
-  border-radius: 10px;
+  @include card-premium($accent-teal);
+  border-color: rgba($accent-teal, 0.15);
   padding: $pad-md;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 
   &__left {
     display: flex;
@@ -182,7 +228,7 @@
     gap: 12px;
 
     i {
-      font-size: 22px;
+      font-size: 20px;
       color: $accent-teal;
     }
   }
@@ -196,12 +242,12 @@
 
   &__sub {
     font-size: 11px;
-    color: rgba($accent-teal, 0.6);
+    color: rgba($accent-teal, 0.5);
   }
 
   &__btn {
-    background: rgba($accent-teal, 0.1);
-    border: 1px solid rgba($accent-teal, 0.25);
+    background: rgba($accent-teal, 0.08);
+    border: 1px solid rgba($accent-teal, 0.2);
     border-radius: 6px;
     padding: 6px 14px;
     color: $accent-teal;
@@ -211,7 +257,7 @@
     letter-spacing: 0.04em;
     transition: background 0.15s;
 
-    &:hover { background: rgba($accent-teal, 0.2); }
+    &:hover { background: rgba($accent-teal, 0.15); }
   }
 }
 
@@ -222,21 +268,20 @@
 }
 
 .leak {
+  @include card-premium($accent-red);
+  border-color: rgba($accent-red, 0.08);
   display: flex;
   align-items: center;
   gap: 10px;
-  background: $bg-secondary;
-  border: 1px solid $border-color;
-  border-radius: 8px;
   padding: 10px $pad-md;
 
   &__dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     flex-shrink: 0;
-    &--red { background: $accent-red; }
-    &--orange { background: $accent-gold; }
+    &--red { background: $accent-red; box-shadow: 0 0 6px rgba($accent-red, 0.5); }
+    &--orange { background: $accent-gold; box-shadow: 0 0 6px rgba($accent-gold, 0.5); }
   }
 
   &__text {
@@ -264,9 +309,7 @@
   }
 
   &__card {
-    background: $bg-secondary;
-    border: 1px solid $border-color;
-    border-radius: 10px;
+    @include card-premium($accent-purple);
     padding: $pad-md;
   }
 
@@ -294,7 +337,6 @@
     font-size: 13px;
     font-weight: 500;
     margin-left: auto;
-
     &--pos { color: $accent-teal; }
     &--neg { color: $accent-red; }
   }

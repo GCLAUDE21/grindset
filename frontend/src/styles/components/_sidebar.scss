@@ -1,51 +1,86 @@
 @use '../variables' as *;
 
+a, button {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &:focus { outline: none; }
+  &:focus-visible { outline: none; }
+}
+
 .sidebar {
-  width: 210px;
+  width: 220px;
   min-height: 100vh;
   background: $bg-secondary;
-  border-right: 1px solid $border-color;
+  border-right: 1px solid $border-gold;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      transparent,
+      rgba($accent-gold, 0.15) 20%,
+      rgba($accent-purple, 0.15) 60%,
+      transparent
+    );
+    pointer-events: none;
+  }
 
   &__logo {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: $pad-md;
-    border-bottom: 1px solid $border-color;
-  }
+    padding: 18px $pad-md;
+    border-bottom: 1px solid $border-gold;
+    position: relative;
 
-  &__logo-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 6px;
-    background: linear-gradient(135deg, $accent-purple, $accent-teal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 700;
-    color: #fff;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba($accent-gold, 0.2), transparent);
+    }
   }
 
   &__logo-name {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: $text-primary;
+    letter-spacing: 0.02em;
   }
 
   &__logo-sub {
     font-size: 9px;
-    color: $text-muted;
-    letter-spacing: 0.06em;
+    color: $text-label;
+    letter-spacing: 0.08em;
   }
 
   &__nav {
     display: flex;
     flex-direction: column;
     padding: $pad-sm 0;
+    flex: 1;
+  }
+
+  &__section {
+    font-size: 9px;
+    color: $text-label;
+    padding: 14px $pad-md 4px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 500;
   }
 
   &__item {
@@ -58,30 +93,76 @@
     transition: all 0.15s;
     position: relative;
     text-decoration: none;
+    margin: 1px 8px;
+    border-radius: 6px;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    border: 1px solid transparent;
 
     i {
       font-size: 15px;
+      transition: color 0.15s;
+    }
+
+    &:focus { outline: none; }
+    &:focus-visible { outline: none; }
+
+    &:active {
+      background: rgba($accent-purple, 0.08);
     }
 
     &:hover {
       color: $text-secondary;
-      background: rgba($accent-purple, 0.05);
+      background: $bg-hover;
+      i { color: $accent-purple; }
     }
 
     &.active {
-      color: $accent-purple;
-      background: rgba($accent-purple, 0.08);
+      color: $text-primary;
+      background: rgba($accent-purple, 0.1);
+      border: 1px solid rgba($accent-purple, 0.2);
+      i { color: $accent-purple; }
 
       &::before {
         content: '';
         position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background: $accent-purple;
+        left: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 60%;
+        background: linear-gradient(180deg, $accent-purple, $accent-teal);
         border-radius: 0 2px 2px 0;
       }
+    }
+  }
+
+  &__bottom {
+    padding: $pad-md;
+    border-top: 1px solid $border-gold;
+  }
+
+  &__settings {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px $pad-sm;
+    color: $text-muted;
+    font-size: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s;
+    outline: none;
+
+    i { font-size: 15px; }
+
+    &:focus { outline: none; }
+    &:focus-visible { outline: none; }
+
+    &:hover {
+      color: $text-secondary;
+      background: $bg-hover;
     }
   }
 }

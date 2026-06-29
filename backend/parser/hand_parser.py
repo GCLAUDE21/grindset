@@ -78,6 +78,48 @@ def parse_hand(hand_text):
         hand["hero_won"] = False
         hand["hero_chips_won"] = 0
 
+    # 9. Board
+    hand["board"] = parse_board(hand_text)
+
+    # 10. Actions par rue
+    streets = {}
+    
+    preflop_match = re.search(
+        r'\*\*\* PRE-FLOP \*\*\*(.*?)(?:\*\*\* FLOP \*\*\*|\*\*\* SUMMARY \*\*\*)',
+        hand_text, re.DOTALL
+    )
+    if preflop_match:
+        streets["preflop"] = parse_street(preflop_match.group(1), HERO)
+    
+    flop_match = re.search(
+        r'\*\*\* FLOP \*\*\*.*?\n(.*?)(?:\*\*\* TURN \*\*\*|\*\*\* SUMMARY \*\*\*)',
+        hand_text, re.DOTALL
+    )
+    if flop_match:
+        streets["flop"] = parse_street(flop_match.group(1), HERO)
+    
+    turn_match = re.search(
+        r'\*\*\* TURN \*\*\*.*?\n(.*?)(?:\*\*\* RIVER \*\*\*|\*\*\* SUMMARY \*\*\*)',
+        hand_text, re.DOTALL
+    )
+    if turn_match:
+        streets["turn"] = parse_street(turn_match.group(1), HERO)
+    
+    river_match = re.search(
+        r'\*\*\* RIVER \*\*\*.*?\n(.*?)(?:\*\*\* SHOW DOWN \*\*\*|\*\*\* SUMMARY \*\*\*)',
+        hand_text, re.DOTALL
+    )
+    if river_match:
+        streets["river"] = parse_street(river_match.group(1), HERO)
+    
+    hand["streets"] = streets
+
+    # 11. Showdown
+    hand["showdown"] = parse_showdown(hand_text)
+
+    # 12. Adversaires
+    hand["opponents"] = parse_opponents(hand_text, HERO)
+
     return hand
 
 def parse_file(filepath):
@@ -96,3 +138,86 @@ def parse_file(filepath):
                 hands.append(parsed)
 
     return hands
+
+def parse_street(street_text, hero):
+    """Extrait toutes les actions d'une rue avec leurs montants."""
+    actions = []
+    
+    # Pattern pour chaque action
+    patterns = [
+        (r'(\w+(?:\.\w+)*(?:_\w+)*) bets (\d+)', 'bet'),
+        (r'(\w+(?:\.\w+)*(?:_\w+)*) calls (\d+)', 'call'),
+        (r'(\w+(?:\.\w+)*(?:_\w+)*) raises \d+ to (\d+)', 'raise'),
+        (r'(\w+(?:\.\w+)*(?:_\w+)*) checks', 'check'),
+        (r'(\w+(?:\.\w+)*(?:_\w+)*) folds', 'fold'),
+        (r'(\w+(?:\.\w+)*(?:_\w+)*) raises \d+ to \d+ and is all-in', 'allin'),
+        (r'(\w+(?:\.\w+)*(?:_\w+)*) bets \d+ and is all-in', 'allin'),
+        (r'(\w+(?:\.\w+)*(?:_\w+)*) calls \d+ and is all-in', 'allin'),
+    ]
+    
+    for line in street_text.strip().split('\n'):
+        line = line.strip()
+        if not line:
+            continue
+            
+        for pattern, action_type in patterns:
+            match = re.search(pattern, line, re.IGNORECASE)
+            if match:
+                player = match.group(1)
+                amount = int(match.group(2)) if len(match.groups()) > 1 else 0
+                actions.append({
+                    "player": player,
+                    "is_hero": player.lower() == hero.lower(),
+                    "action": action_type,
+                    "amount": amount
+                })
+                break
+    
+    return actions
+
+
+def parse_board(hand_text):
+    """Extrait les cartes du board rue par rue."""
+    board = {}
+    
+    flop_match = re.search(r'\*\*\* FLOP \*\*\* \[(.+?)\]', hand_text)
+    if flop_match:
+        board["flop"] = flop_match.group(1).split()
+    
+    turn_match = re.search(r'\*\*\* TURN \*\*\* \[.+?\]\[(.+?)\]', hand_text)
+    if turn_match:
+        board["turn"] = turn_match.group(1).split()
+    
+    river_match = re.search(r'\*\*\* RIVER \*\*\* \[.+?\]\[(.+?)\]', hand_text)
+    if river_match:
+        board["river"] = river_match.group(1).split()
+    
+    return board
+
+
+def parse_showdown(hand_text):
+    """Extrait les cartes de tous les joueurs au showdown."""
+    showdown = {}
+    
+    for match in re.finditer(r'(\w+(?:\.\w+)*(?:_\w+)*) shows \[(.+?)\]', hand_text, re.IGNORECASE):
+        player = match.group(1)
+        cards = match.group(2).split()
+        showdown[player] = cards
+    
+    return showdown
+
+
+def parse_opponents(hand_text, hero):
+    """Extrait les infos de tous les adversaires."""
+    opponents = []
+    
+    for match in re.finditer(r'Seat \d+: (\w+(?:\.\w+)*(?:_\w+)*) \((\d+)\)', hand_text):
+        name = match.group(1)
+        stack = int(match.group(2))
+        if name.lower() != hero.lower():
+            opponents.append({
+                "name": name,
+                "stack": stack
+            })
+    
+    return opponents

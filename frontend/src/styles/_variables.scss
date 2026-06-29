@@ -1,25 +1,34 @@
-// Couleurs principales
-$bg-primary: #0a0a0f;
-$bg-secondary: #0d0d18;
-$bg-card: #111122;
+// Backgrounds
+$bg-primary: #07070f;
+$bg-secondary: #0c0c1a;
+$bg-card: #10101e;
+$bg-hover: #14142a;
 
-$border-color: #1a1a2e;
+// Borders
+$border-color: #1a1a30;
 $border-strong: #2a2a4a;
+$border-gold: rgba(#c9a84c, 0.15);
 
-$text-primary: #e0e0ff;
-$text-secondary: #a0a0d0;
-$text-muted: #6a6a9a;
+// Texte
+$text-primary: #eeeeff;
+$text-secondary: #9090c0;
+$text-muted: #7070a0;
+$text-label: rgba(#c9a84c, 0.7);
 
-$accent-purple: #6c63ff;
+// Accents
+$accent-purple: #7c6fff;
 $accent-teal: #3ecfcf;
-$accent-gold: #f0a040;
+$accent-gold: #c9a84c;
+$accent-gold-light: #f0d080;
 $accent-red: #ff5555;
+$accent-green: #3ecf8e;
 
 // Typographie
 $font-main: 'Inter', sans-serif;
 $font-mono: 'JetBrains Mono', monospace;
 
 // Espacements
+$pad-xs: 4px;
 $pad-sm: 8px;
 $pad-md: 16px;
 $pad-lg: 24px;

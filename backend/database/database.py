@@ -27,6 +27,10 @@ def init_db():
             hero_preflop_action TEXT,
             hero_won INTEGER,
             hero_chips_won INTEGER,
+            board TEXT,
+            streets TEXT,
+            showdown TEXT,
+            opponents TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
@@ -47,8 +51,9 @@ def save_hands(hands):
                     hand_id, buy_in, small_blind, big_blind,
                     hero_cards, hero_stack, hero_stack_bb,
                     hero_position, hero_preflop_action,
-                    hero_won, hero_chips_won
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    hero_won, hero_chips_won,
+                    board, streets, showdown, opponents
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 hand.get("hand_id"),
                 hand.get("buy_in"),
@@ -60,7 +65,11 @@ def save_hands(hands):
                 hand.get("hero_position"),
                 hand.get("hero_preflop_action"),
                 1 if hand.get("hero_won") else 0,
-                hand.get("hero_chips_won", 0)
+                hand.get("hero_chips_won", 0),
+                json.dumps(hand.get("board", {})),
+                json.dumps(hand.get("streets", {})),
+                json.dumps(hand.get("showdown", {})),
+                json.dumps(hand.get("opponents", []))
             ))
             saved += 1
         except Exception as e:
